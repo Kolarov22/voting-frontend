@@ -1,0 +1,5 @@
+DO NOT FORGET:
+
+1. Use only the deployer of the smart contract in order to add candidates to the election.
+2. Think of an OCR application to scan information from the ID of the users.
+3. Take care of visuals for the frontend.
