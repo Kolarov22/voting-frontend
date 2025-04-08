@@ -5,11 +5,14 @@ import { User, Vote, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 
 const Navbar = () => {
-  const [darkTheme, setDarkTheme] = useState("false");
+  const [darkTheme, setDarkTheme] = useState(false);
 
   const toggleTheme = () => {
-    setDarkTheme((prevTheme) => !prevTheme);
-    window.localStorage.setItem("darkTheme", darkTheme);
+    setDarkTheme((prevTheme) => {
+      const newTheme = !prevTheme;
+      window.localStorage.setItem("darkTheme", newTheme.toString());
+      return newTheme;
+    });
     document.documentElement.classList.toggle("dark");
   };
 

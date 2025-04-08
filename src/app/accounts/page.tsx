@@ -1,7 +1,13 @@
-import React from "react";
+import Account from "@/components/Account";
+import ConnectWallet from "@/components/ConnectWallet";
 
 const AccountsPage = () => {
-  return <div>AccountsPage</div>;
+  return (
+    <div>
+      <h1>Connected account: </h1>
+      <ConnectWallet />
+    </div>
+  );
 };
 
 export default AccountsPage;
