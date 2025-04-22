@@ -1,4 +1,3 @@
-import Account from "@/components/Account";
 import ConnectWallet from "@/components/ConnectWallet";
 
 const AccountsPage = () => {

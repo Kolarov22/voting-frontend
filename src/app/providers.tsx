@@ -2,6 +2,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { State, WagmiProvider } from "wagmi";
 import { config } from "../config/wagmi-config";
+import { TimerProvider } from "@/context/TimerContext";
 
 const queryClient = new QueryClient();
 
@@ -14,7 +15,9 @@ export function Providers({
 }>) {
   return (
     <WagmiProvider config={config} initialState={initialState}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <TimerProvider>{children}</TimerProvider>
+      </QueryClientProvider>
     </WagmiProvider>
   );
 }
