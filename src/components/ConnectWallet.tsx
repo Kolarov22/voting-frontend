@@ -15,7 +15,8 @@ export default function ConnectWallet() {
       </h1>
       <Account />
 
-      {address === "0xCF2145D8Ba029c5E41e6c9D21851cBD1A5936B16" ? (
+      {address === "0xCF2145D8Ba029c5E41e6c9D21851cBD1A5936B16" ||
+      address === "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" ? (
         <Link href={"/admin"}>
           <button className="bg-purple-cta text-white px-4 py-2 rounded-lg">
             Go to admin dashboard

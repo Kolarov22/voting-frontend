@@ -17,7 +17,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white dark:bg-slate-800 dark:text-frost-white dark:shadow-slate-500 flex flex-row justify-between items-center py-4 md:py-8 px-6 md:px-12 shadow-slate-200  shadow-md">
+    <nav className="bg-white dark:bg-slate-800 dark:text-frost-white dark:shadow-purple-cta dark:shadow-sm flex flex-row justify-between items-center py-4 md:py-8 px-6 md:px-12 shadow-slate-200  shadow-md">
       <Link href="/">
         <Image src="/ethereum.png" alt="logo" width={50} height={50} />
       </Link>

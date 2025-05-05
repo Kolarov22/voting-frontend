@@ -4,7 +4,7 @@ import Timer from "./Timer";
 
 const ElectionBlock = (election: Election) => {
   return (
-    <div className="inline-flex justify-between items-center text-black p-4 rounded-lg shadow-md gap-3 md:gap-6 bg-slate-100">
+    <div className="inline-flex justify-between items-center text-black p-4 rounded-lg shadow-md gap-3 md:gap-6 bg-slate-100 dark:bg-grey-accent dark:text-frost-white">
       <div>
         <h2 className="text-xl font-semibold">{election.name}</h2>
         <p className="text-sm">
@@ -13,7 +13,11 @@ const ElectionBlock = (election: Election) => {
         </p>
       </div>
 
-      <Timer duration={election.duration} id={election.id} />
+      <Timer
+        duration={election.duration}
+        id={election.id}
+        address={election.address}
+      />
 
       <div>
         <Link href={`/elections/${election.address}`}>

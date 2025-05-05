@@ -17,6 +17,7 @@ const config: Config = {
         "purple-accent": "#8685ef",
         "purple-cta": "hsla(263, 75%, 51%)",
         "frost-white": "#faf8ff",
+        "grey-accent": "#343d4e",
         contrast: "#e3e0f3",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

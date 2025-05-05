@@ -14,6 +14,7 @@ interface TimerContextType {
   setTimerValue: (id: string, value: number) => void;
   resetTimer: (id: string) => void;
   startTimer: (id: string, duration: number) => void;
+  syncWithElection: (electionId: string) => Promise<number>;
 }
 
 const TimerContext = createContext<TimerContextType | undefined>(undefined);
@@ -34,7 +35,6 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const resetTimer = (id: string) => {
-    // Clear any running interval
     if (intervals.current[id]) {
       clearInterval(intervals.current[id]);
       delete intervals.current[id];
@@ -47,13 +47,40 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const syncWithElection = async (electionAddress: string) => {
+    try {
+      const response = await fetch(`/api/elections/${electionAddress}`);
+      if (!response.ok) throw new Error("Failed to fetch election data");
+
+      const election = await response.json();
+
+      // Calculate remaining time
+      const startTime = new Date(election.createdAt).getTime();
+      const currentTime = new Date().getTime();
+      const durationMs = election.duration * 1000;
+      const endTime = startTime + durationMs;
+      const remainingMs = endTime - currentTime;
+      const remainingSeconds = Math.max(0, Math.floor(remainingMs / 1000));
+
+      if (remainingSeconds > 0) {
+        setTimerValue(election.id, remainingSeconds);
+        startTimer(election.id, remainingSeconds);
+      } else {
+        setTimerValue(election.id, 0);
+      }
+
+      return remainingSeconds;
+    } catch (error) {
+      console.error("Error syncing with election:", error);
+      return 0;
+    }
+  };
+
   const startTimer = (id: string, duration: number) => {
-    // Check if timer exists already
     if (timers[id] === undefined) {
       setTimerValue(id, duration);
     }
 
-    // Clear any existing interval for this ID
     if (intervals.current[id]) {
       clearInterval(intervals.current[id]);
     }
@@ -78,7 +105,13 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <TimerContext.Provider
-      value={{ timers, setTimerValue, resetTimer, startTimer }}
+      value={{
+        timers,
+        setTimerValue,
+        resetTimer,
+        startTimer,
+        syncWithElection,
+      }}
     >
       {children}
     </TimerContext.Provider>

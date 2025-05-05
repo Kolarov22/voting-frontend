@@ -6,7 +6,7 @@ const AdminPage = () => {
   return (
     <div className="m-2">
       <Dashboard />
-      <div className="flex flex-col md:flex-row gap-2 mt-4">
+      <div className="flex flex-col items-center md:items-start md:flex-row gap-2 mt-4">
         <ElectionAddDropdown />
         <ElectionModifyDropdown />
       </div>

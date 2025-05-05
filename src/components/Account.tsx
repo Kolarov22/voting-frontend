@@ -9,7 +9,7 @@ export default function Account() {
   const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
 
   return (
-    <div className="flex flex-col items-start justify-center sm:gap-4 gap-10 my-10 bg-slate-100 p-12 rounded-lg shadow-md">
+    <div className="flex flex-col items-start justify-center sm:gap-4 gap-10 my-10 bg-slate-100 p-12 rounded-lg shadow-md dark:text-white dark:bg-grey-accent">
       <h1 className="text-xl self-center font-medium md:mb-5">
         Wallet information
       </h1>

@@ -1,0 +1,42 @@
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+}
+
+model Election {
+  id          String      @id @default(uuid())
+  name        String
+  description String
+  address     String       @unique
+  duration    Int          // in seconds
+  createdAt   DateTime @default(now())
+
+  
+
+  candidates  Candidate[]
+  voters      Voter[]
+  
+}
+
+model Candidate {
+  id          Int          @id @default(autoincrement())
+  name        String
+  electionId  String
+  election    Election     @relation(fields: [electionId], references: [id], onDelete: Cascade)
+}
+
+model Voter {
+  id          String       @id @default(uuid())
+  wallet      String       @unique
+  hasVoted    Boolean      @default(false)
+  timestamp   DateTime?
+  electionId  String
+  election    Election     @relation(fields: [electionId], references: [id], onDelete: Cascade)
+}
+
