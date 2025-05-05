@@ -49,7 +49,7 @@ const ElectionModifyDropdown = () => {
     address: string,
     candidatesArray: string[]
   ) {
-    const response = await fetch(`${URL}/candidates`, {
+    const response = await fetch(`${URL}/api/candidates`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

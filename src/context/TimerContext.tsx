@@ -21,6 +21,7 @@ const TimerContext = createContext<TimerContextType | undefined>(undefined);
 
 export const TimerProvider = ({ children }: { children: ReactNode }) => {
   const intervals = useRef<Record<string, NodeJS.Timeout>>({});
+  const URL = process.env.NEXT_PUBLIC_API_URL;
 
   const [timers, setTimers] = useState<Record<string, number>>({});
 
@@ -49,7 +50,7 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
 
   const syncWithElection = async (electionAddress: string) => {
     try {
-      const response = await fetch(`/api/elections/${electionAddress}`);
+      const response = await fetch(`${URL}/api/elections/${electionAddress}`);
       if (!response.ok) throw new Error("Failed to fetch election data");
 
       const election = await response.json();

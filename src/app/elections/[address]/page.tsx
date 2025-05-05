@@ -3,7 +3,7 @@ import Candidates from "@/components/Candidates";
 
 const getElection = async (address: string) => {
   const URL = process.env.NEXT_PUBLIC_API_URL;
-  const response = await fetch(`${URL}/elections/${address}`, {
+  const response = await fetch(`${URL}/api/elections/${address}`, {
     cache: "no-store",
   });
 

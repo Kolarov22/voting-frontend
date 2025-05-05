@@ -21,7 +21,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchElections = async () => {
       try {
-        const response = await fetch(`${URL}/elections`);
+        const response = await fetch(`${URL}/api/elections`);
         if (!response.ok) {
           throw new Error("Failed to fetch elections");
         }
@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   const cancelElection = async (address: string) => {
     try {
-      const response = await fetch(`${URL}/elections/${address}`, {
+      const response = await fetch(`${URL}/api/elections/${address}`, {
         method: "DELETE",
       });
       if (!response.ok) {

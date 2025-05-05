@@ -68,7 +68,7 @@ const ElectionAddDropdown = () => {
     address: `0x${string}`;
   }) => {
     try {
-      const response = await fetch(`${URL}/elections`, {
+      const response = await fetch(`${URL}/api/elections`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

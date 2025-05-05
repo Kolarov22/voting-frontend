@@ -3,7 +3,7 @@ import type { Election } from "@/types";
 
 async function getElections(): Promise<Election[]> {
   const URL = process.env.NEXT_PUBLIC_API_URL;
-  const response = await fetch(`${URL}/elections`, {
+  const response = await fetch(`${URL}/api/elections`, {
     next: {
       revalidate: 60,
     },
