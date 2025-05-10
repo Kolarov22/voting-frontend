@@ -14,11 +14,11 @@ import { useForm } from "react-hook-form";
 import { modifyElectionSchema } from "@/schemas";
 import { useAccount, useWriteContract } from "wagmi";
 import { abi } from "../../constants";
+import { useToast } from "@/hooks/use-toast";
 
 const ElectionModifyDropdown = () => {
   const URL = process.env.NEXT_PUBLIC_API_URL;
-  const account = useAccount();
-
+  const { toast } = useToast();
   const {
     register,
     handleSubmit,
@@ -68,6 +68,12 @@ const ElectionModifyDropdown = () => {
 
     const data = await response.json();
     console.log("Candidates added successfully:", data);
+
+    toast({
+      title: "Election modified",
+      description: "Election modified successfully",
+      variant: "default",
+    });
   };
 
   const onSubmit = async (data: z.infer<typeof modifyElectionSchema>) => {

@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import { cookieToInitialState } from "wagmi";
 import { config } from "@/config/wagmi-config";
 import { headers } from "next/headers";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "E-Voting",
@@ -27,6 +28,7 @@ export default function RootLayout({
         <Providers initialState={initialState}>
           <Navbar />
           {children}
+          <Toaster />
         </Providers>
       </body>
     </html>

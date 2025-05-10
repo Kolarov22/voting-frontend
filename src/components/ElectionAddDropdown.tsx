@@ -21,6 +21,7 @@ import { useWatchContractEvent, usePublicClient } from "wagmi";
 import { abi, contractAddresses } from "../../constants";
 import { useState } from "react";
 import { decodeEventLog } from "viem";
+import { useToast } from "@/hooks/use-toast";
 
 const ElectionAddDropdown = () => {
   const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -28,7 +29,7 @@ const ElectionAddDropdown = () => {
   const [deployedContractAddress, setDeployedContractAddress] = useState<
     string | null
   >(null);
-
+  const { toast } = useToast();
   const publicClient = usePublicClient();
 
   const [electionData, setElectionData] = useState<{
@@ -81,6 +82,11 @@ const ElectionAddDropdown = () => {
       }
 
       const data = await response.json();
+      toast({
+        title: "Election created successfully",
+        description: `Election created at address: ${election.address}`,
+        variant: "default",
+      });
       console.log("Election saved:", data);
     } catch (error) {
       console.error("Error saving election:", error);
@@ -90,7 +96,6 @@ const ElectionAddDropdown = () => {
   const onSubmit = async (data: z.infer<typeof submitElectionSchema>) => {
     const { name, description, duration } = data;
 
-    // Early validation
     if (!factoryAddress) {
       console.error(
         "Factory address not available. Check your network connection."
@@ -103,12 +108,10 @@ const ElectionAddDropdown = () => {
       return;
     }
 
-    // Store form data first
     setElectionData({ name, description, duration });
     setIsLoading(true);
 
     try {
-      // Step 1: Send the transaction
       console.log("Creating election with duration:", duration);
       const hash = await writeContractAsync({
         address: factoryAddress as `0x${string}`,
@@ -118,14 +121,12 @@ const ElectionAddDropdown = () => {
       });
       console.log("Transaction submitted with hash:", hash);
 
-      // Step 2: Wait for confirmation
       const receipt = await publicClient.waitForTransactionReceipt({
         hash: hash as `0x${string}`,
         timeout: 60_000, // 60 seconds timeout
       });
       console.log("Transaction confirmed:", receipt);
 
-      // Step 3: Parse logs to find the event
       let electionAddress: `0x${string}` | null = null;
 
       for (const log of receipt.logs) {
@@ -142,16 +143,12 @@ const ElectionAddDropdown = () => {
             console.log("Found election address:", electionAddress);
             break;
           }
-        } catch (e) {
-          // Skip logs that can't be decoded with our ABI
-        }
+        } catch (e) {}
       }
 
-      // Step 4: Handle the result
       if (electionAddress) {
         setDeployedContractAddress(electionAddress);
 
-        // Step 5: Save to database
         await saveElectionToDatabase({
           name,
           description,
@@ -159,16 +156,13 @@ const ElectionAddDropdown = () => {
           address: electionAddress,
         });
 
-        // Step 6: Reset UI state
         reset();
-        console.log("Election created successfully");
       } else {
         console.error("No ElectionCreated event found in transaction logs");
       }
     } catch (error) {
       console.error("Error in election creation:", error);
 
-      // Provide more specific error message if possible
       if (error instanceof Error) {
         if (error.message.includes("user rejected")) {
           console.log("Transaction was rejected by the user");
@@ -177,7 +171,6 @@ const ElectionAddDropdown = () => {
         }
       }
     } finally {
-      // Always clean up state
       setIsLoading(false);
       setElectionData(null);
     }

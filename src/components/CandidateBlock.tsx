@@ -1,6 +1,7 @@
 "use client";
 import { abi } from "../../constants";
 import { useWriteContract } from "wagmi";
+import { useToast } from "@/hooks/use-toast";
 
 const CandidateBlock = ({
   candidate,
@@ -10,24 +11,32 @@ const CandidateBlock = ({
   address: string;
 }) => {
   const { writeContractAsync, isPending, isSuccess } = useWriteContract();
+  const { toast } = useToast();
 
   const voteCandidate = async function (
     candidateId: number,
     electionAddress: string
   ) {
-    console.log(JSON.stringify(abi[1]));
-    console.log("Candidate ID:", candidateId);
-    console.log("Election Address:", electionAddress);
+    try {
+      await writeContractAsync({
+        address: electionAddress as `0x${string}`,
+        abi: abi[1],
+        functionName: "vote",
+        args: [candidateId],
+      });
 
-    writeContractAsync({
-      address: electionAddress as `0x${string}`,
-      abi: abi[1],
-      functionName: "vote",
-      args: [candidateId],
-    });
-
-    if (isSuccess) {
-      console.log("Vote successful");
+      toast({
+        title: "Vote cast successfully",
+        description: `You have voted for ${candidate.name}`,
+        variant: "default",
+      });
+    } catch (error) {
+      console.log("Vote casting failed", error);
+      toast({
+        title: "Vote casting failed",
+        description: "An error occurred while casting your vote",
+        variant: "destructive",
+      });
     }
   };
 

@@ -1,6 +1,6 @@
 import Timer from "@/components/Timer";
 import Candidates from "@/components/Candidates";
-
+import Results from "@/components/Results";
 const getElection = async (address: string) => {
   const URL = process.env.NEXT_PUBLIC_API_URL;
   const response = await fetch(`${URL}/api/elections/${address}`, {
@@ -65,6 +65,8 @@ const ElectionPage = async ({
 
         <Candidates address={election.address} />
       </div>
+
+      <Results id={election.id} address={election.address} />
     </div>
   );
 };
